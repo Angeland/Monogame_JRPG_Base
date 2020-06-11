@@ -97,10 +97,13 @@
     <Compile Include="States\World\WorldRenderer.cs" />
     <Compile Include="States\World\TilePalette.cs" />
     <Compile Include="States\World\WorldInformation.cs" />
+    <Compile Include="Textures\AnimationCollection.cs" />
     <Compile Include="Textures\Button.cs" />
+    <Compile Include="Textures\IAnimationCollection.cs" />
     <Compile Include="Textures\IButton.cs" />
     <Compile Include="Textures\ITile.cs" />
     <Compile Include="Textures\ITilesCollection.cs" />
+    <Compile Include="Textures\IWorldCharacter.cs" />
     <Compile Include="Textures\Minimap.cs" />
     <Compile Include="Textures\TextureCache.cs" />
     <Compile Include="Textures\TextureLoader.cs" />

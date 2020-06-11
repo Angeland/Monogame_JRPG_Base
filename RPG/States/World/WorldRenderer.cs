@@ -34,13 +34,14 @@ namespace RPG.States
         /// </summary>
         private object[] _tileUsedBy;
 
-        public World_Character worldCharacter;
+        public IWorldCharacter worldCharacter;
 
         /// <summary>
         /// Bitmap index of world-map
         /// </summary>
         private ITilesCollection _worldMapAnimationSet;
         public int minimapXoff = 0;
+        public int minimapYoff = 10;
 
         //Index of colors from the worldMap bitmap
         private Color[][] _worldMapSpriteSet;
@@ -53,9 +54,8 @@ namespace RPG.States
         private Color _sunColor = Color.White;
         private int
             _minimapW = 0,
-            _minimapH = 0,
-            _lightX = 0,
-            _lightY = 0;
+            _minimapH = 0;
+        Point minimapBeacon;
 
         private bool battleTransition = false;
         private bool _minimapActive = false;
@@ -181,12 +181,10 @@ namespace RPG.States
             _activeWorldMapSprite = _worldMapSpriteSet[_worldAnimator.ActiveIndex()];
             WorldMapClouds(gameTime);
 
-            float pcX = worldCharacter.CameraPostition.X / WorldInformation.mapWidth;
-            float pcY = worldCharacter.CameraPostition.Y / WorldInformation.mapHeight;
-
-            _lightX = (int)((_minimapW * pcX) + DisplayOutputSettings.ScreenWidth - _minimapW - 10);
-            _lightY = (int)((_minimapH * pcY) + 10);
-
+            Vector2 pc = worldCharacter.GetCenterTilePosition();
+            pc /= WorldInformation.MapSize;
+            pc *= new Vector2(_minimapW, _minimapH);
+            minimapBeacon = new Point((int)pc.X, (int)pc.Y);
         }
 
         private void WorldMapClouds(GameTime gameTime)
@@ -227,15 +225,13 @@ namespace RPG.States
 
         private void DrawWorldMap()
         {
-            int x1 = 0, y1 = 0;
-            Color FoundColor;
-            for (int yOffset = (int)worldCharacter.CameraPostition.Y * WorldInformation.mapWidth, TileY = -EngineSettings.TileSize + (int)worldCharacter.CharacterOffset.Y; yOffset < (int)(worldCharacter.CameraPostition.Y + _halfWidthPlus + 1) * WorldInformation.mapWidth; yOffset += WorldInformation.mapWidth, TileY += EngineSettings.TileSize)
+            Vector2 cameraPostition = worldCharacter.CameraPosition;
+            Point positionOffset = worldCharacter.PositionOffset + new Point(EngineSettings.TileSize, EngineSettings.TileSize);
+
+            for (int yOffset = ((int)cameraPostition.Y * WorldInformation.mapWidth) - 1, TileY = -positionOffset.Y; yOffset < (int)(cameraPostition.Y + _halfWidthPlus) * WorldInformation.mapWidth; yOffset += WorldInformation.mapWidth, TileY += EngineSettings.TileSize)
             {
-                y1++;
-                //-1 is added to buffer draw the next coulomb to the left of the frame
-                for (int x = (int)worldCharacter.CameraPostition.X - 1 + yOffset, TileX = -EngineSettings.TileSize + (int)worldCharacter.CharacterOffset.X; x < (int)worldCharacter.CameraPostition.X + _halfHeightPlus + yOffset; x++, TileX += EngineSettings.TileSize)
+                for (int x = (int)cameraPostition.X + yOffset, TileX = -positionOffset.X; x < (int)cameraPostition.X + _halfHeightPlus + yOffset + 1; x++, TileX += EngineSettings.TileSize)
                 {
-                    x1++;
                     int ColorIndex = x;
 
                     while (ColorIndex < yOffset)
@@ -248,14 +244,15 @@ namespace RPG.States
                     while (ColorIndex >= _activeWorldMapSprite.Length)
                         ColorIndex -= _activeWorldMapSprite.Length;
 
-                    FoundColor = _activeWorldMapSprite[ColorIndex];
+                    Color TileColor = _activeWorldMapSprite[ColorIndex];
 
-                    if (TilePalette.TileColor.ContainsKey(FoundColor))
+                    if (TilePalette.TileColor.ContainsKey(TileColor))
                     {
-                        int col = TilePalette.TileColor[FoundColor];
+                        Point t = GetCoordinate(ColorIndex);
+                        int col = TilePalette.TileColor[TileColor];
                         GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
                             new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
-                            _sunColor);
+                           t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
                     }
                     else
                     {
@@ -265,6 +262,13 @@ namespace RPG.States
                     }
                 }
             }
+        }
+
+        private Point GetCoordinate(int ColorIndex)
+        {
+            int y = ColorIndex / WorldInformation.mapWidth;
+            int x = ColorIndex - (y * WorldInformation.mapWidth);
+            return new Point(x, y);
         }
         private void DrawClouds()
         {
@@ -280,12 +284,13 @@ namespace RPG.States
         {
             //_minimapActive
             GSS.SpriteBatch.Draw(Minimap.Map(),
-                new Rectangle(minimapXoff, 10, _minimapW, _minimapH), Color.White);
+                new Rectangle(minimapXoff, minimapYoff, _minimapW, _minimapH),
+                Color.White);
             //_minimapLightAnimationSize
             GSS.SpriteBatch.Draw(Minimap.Cursor(),
-                new Rectangle(_lightX
-                    , _lightY
-                    , 20, 20), _minimapLightAnimationSize[_worldAnimator.ActiveIndex()], Color.OrangeRed);
+                new Rectangle(minimapXoff + minimapBeacon.X, minimapYoff + minimapBeacon.Y, 20, 20),
+                _minimapLightAnimationSize[_worldAnimator.ActiveIndex()],
+                Color.OrangeRed);
         }
         #endregion
     }

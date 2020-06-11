@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using RPG.States.AutoElements;
 using RPG.States.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RPG.Textures
 {
@@ -72,9 +67,9 @@ namespace RPG.Textures
             };
             return new TileCollection(Content, tiles);
         }
-        public World_Character WorldCharacter()
+        public IWorldCharacter WorldCharacter()
         {
-            return new World_Character(Content.Load<Texture2D>("Graphics/People/PC/baseChar"));
+            return new World_Character(Content, new string[] { "Graphics/People/PC/baseChar" });
         }
         public WorldAutoElements WorldAutoElements()
         {

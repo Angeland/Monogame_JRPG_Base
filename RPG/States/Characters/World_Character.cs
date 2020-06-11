@@ -1,45 +1,68 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using RPG.States.Configuration;
 using RPG.States.DebugHelp;
 using RPG.States.World;
+using RPG.Textures;
 using System;
 
 namespace RPG.States.Characters
 {
-    public class World_Character : Character
+    public class World_Character : AnimationCollection, IWorldCharacter
     {
         private float MoveSpeed = 1;
         private int CharacterAnimationRow = 0;
-        private readonly Texture2D BaseTexture;
-        public Vector2 CameraPostition = new Vector2(550, 100), CharacterOffset;
+        private Vector2 _cameraPostition;
+        public Vector2 CameraPosition
+        {
+            get
+            {
+                return _cameraPostition;
+            }
+            set
+            {
+                _cameraPostition = value;
+            }
+        }
+        public Point PositionOffset => new Point(
+                                (int)((_cameraPostition.X - (int)_cameraPostition.X) * EngineSettings.TileSize),
+                                (int)((_cameraPostition.Y - (int)_cameraPostition.Y) * EngineSettings.TileSize));
+        int stepsSinceLastBattle = 0;
+        int CharacterX = 0;
+        int CharacterY = 0;
+        int CharacterActiveTileX = 0;
+        int CharacterActiveTileY = 0;
+        int tx;
+        int ty;
+
+
+        public World_Character(ContentManager content, string[] texturePaths) : base(content, texturePaths)
+        {
+            //Initial "Start" position
+            //TODO: Get this from Save
+            _cameraPostition = new Vector2(550, 100);
+        }
+
+
         public void PlaceCamera()
         {
             CharacterX = DisplayOutputSettings.CenterScreenTileOffsetX * EngineSettings.TileSize;
             CharacterY = DisplayOutputSettings.CenterScreenTileOffsetY * EngineSettings.TileSize;
-            CameraPostition.X -= DisplayOutputSettings.CenterScreenTileOffsetX;
-            CameraPostition.Y -= DisplayOutputSettings.CenterScreenTileOffsetY;
+            _cameraPostition.X -= DisplayOutputSettings.CenterScreenTileOffsetX;
+            _cameraPostition.Y -= DisplayOutputSettings.CenterScreenTileOffsetY;
         }
-        public World_Character(Texture2D BaseTexture)
-        {
-            this.BaseTexture = BaseTexture;
-        }
+
         public void Update(GameTime gameTime)
         {
             WalkSpeed();
             Vector2 CharacterMovement = UpdatePosition();
             if (CharacterMovement != Vector2.Zero)
             {
-                CameraPostition += CharacterMovement / EngineSettings.TileSize;
-                if (CameraPostition.X <= 0) CameraPostition.X += WorldInformation.mapWidth;
-                else if (CameraPostition.X > WorldInformation.mapWidth) CameraPostition.X -= WorldInformation.mapWidth;
-                if (CameraPostition.Y <= 0) CameraPostition.Y += WorldInformation.mapHeight;
-                else if (CameraPostition.Y > WorldInformation.mapHeight) CameraPostition.Y -= WorldInformation.mapHeight;
-
-                CharacterOffset = new Vector2(
-                    ((int)CameraPostition.X - CameraPostition.X) * EngineSettings.TileSize,
-                    ((int)CameraPostition.Y - CameraPostition.Y) * EngineSettings.TileSize);
-
+                _cameraPostition += CharacterMovement / EngineSettings.TileSize;
+                if (_cameraPostition.X <= 0) _cameraPostition.X += WorldInformation.mapWidth;
+                else if (_cameraPostition.X > WorldInformation.mapWidth) _cameraPostition.X -= WorldInformation.mapWidth;
+                if (_cameraPostition.Y <= 0) _cameraPostition.Y += WorldInformation.mapHeight;
+                else if (_cameraPostition.Y > WorldInformation.mapHeight) _cameraPostition.Y -= WorldInformation.mapHeight;
 
                 if (!BattleChance()) //Check if battle occurs
                 {
@@ -55,6 +78,7 @@ namespace RPG.States.Characters
                 }
             }
         }
+
 
         private void WalkSpeed()
         {
@@ -91,9 +115,6 @@ namespace RPG.States.Characters
             return CharacterMovement;
         }
 
-        int CharacterX = 0, CharacterY = 0;
-        int CharacterActiveTileX = 0, CharacterActiveTileY = 0;
-        int tx, ty;
         private Vector2 GetDirection(Vector2 direction)
         {
             if (direction != Vector2.Zero)
@@ -117,7 +138,7 @@ namespace RPG.States.Characters
         }
         bool IsValid(Vector2 direction)
         {
-            Vector2 futurePos = CameraPostition + (direction / EngineSettings.TileSize);
+            Vector2 futurePos = _cameraPostition + (direction / EngineSettings.TileSize);
 
             CharacterActiveTileX = (int)((DisplayOutputSettings.CenterScreenTileOffsetX + 0.5 + (int)futurePos.X - futurePos.X) * EngineSettings.TileSize);
             CharacterActiveTileY = (int)((DisplayOutputSettings.CenterScreenTileOffsetY + 0.5 + (int)futurePos.Y - futurePos.Y) * EngineSettings.TileSize);
@@ -126,7 +147,7 @@ namespace RPG.States.Characters
             ty = (int)(futurePos.Y + DisplayOutputSettings.CenterScreenTileOffsetY + 1);
             return TilePalette.IsWalkable(tx, ty);
         }
-        int stepsSinceLastBattle = 0;
+
         private bool BattleChance()
         {
             //check if battle occurs
@@ -141,11 +162,16 @@ namespace RPG.States.Characters
         }
         public Vector2 GetPosition()
         {
-            return CameraPostition * EngineSettings.TileSize;
+            return _cameraPostition * EngineSettings.TileSize;
         }
         public Vector2 GetCenterTilePosition()
         {
-            return CameraPostition + new Vector2(DisplayOutputSettings.CenterScreenTileOffsetX + 0.5f, DisplayOutputSettings.CenterScreenTileOffsetY + 0.5f);
+            Vector2 location = _cameraPostition - new Vector2(DisplayOutputSettings.CenterScreenTileOffsetX, DisplayOutputSettings.CenterScreenTileOffsetY);
+            return NormalizeAxis(location);
+        }
+        private Vector2 NormalizeAxis(Vector2 location)
+        {
+            return location;
         }
         private void UpdateCharacter(Vector2 direction)
         {
@@ -204,13 +230,10 @@ namespace RPG.States.Characters
                 }
             }
         }
-        Texture2D GetCharacterTexture()
-        {
-            return BaseTexture;
-        }
+
         public void Draw()
         {
-            GSS.SpriteBatch.Draw(GetCharacterTexture(),
+            GSS.SpriteBatch.Draw(GetTexture(CharacterAnimationRow),
                 new Rectangle(
                     CharacterX,
                     CharacterY,
@@ -219,7 +242,7 @@ namespace RPG.States.Characters
 
             if (GSS.DebugMode)
             {
-                GSS.SpriteBatch.Draw(GetCharacterTexture(),
+                GSS.SpriteBatch.Draw(GetTexture(0),
                     new Rectangle(
                         CharacterActiveTileX,
                         CharacterActiveTileY,

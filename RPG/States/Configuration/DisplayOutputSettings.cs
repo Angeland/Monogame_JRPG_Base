@@ -4,7 +4,7 @@ namespace RPG.States.Configuration
 {
     public static class DisplayOutputSettings
     {
-        internal static bool isFullScreen = false;
+        internal static bool isFullScreen = false   ;
 
 
         private static DisplayMode displayMode;
@@ -31,7 +31,7 @@ namespace RPG.States.Configuration
             private set
             {
                 _screenHeight = value;
-                CenterScreenTileOffsetY = (int)((value / 1920f) * (2 * EngineSettings.TileSize));
+                CenterScreenTileOffsetY = (int)((value / 2560f) * (2 * EngineSettings.TileSize));
             }
         }
 
@@ -45,7 +45,7 @@ namespace RPG.States.Configuration
             private set
             {
                 _screenWidth = value;
-                CenterScreenTileOffsetX = (int)((value / 1200f) * (2 * EngineSettings.TileSize));
+                CenterScreenTileOffsetX = (int)((value / 1440f) * (2 * EngineSettings.TileSize));
             }
         }
     }

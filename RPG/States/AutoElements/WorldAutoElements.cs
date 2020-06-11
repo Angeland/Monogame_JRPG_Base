@@ -42,8 +42,8 @@ namespace RPG.States.AutoElements
             {
                 //TODO: Follow Ship (Bug found when crossing edge)
                 DebugConsole.WriteLine($@"Ship X:{Ships[1].GetPos().X} Y:{Ships[1].GetPos().Y} 
-Camera X:{GSS.World.worldCharacter.CameraPostition.X} Y:{GSS.World.worldCharacter.CameraPostition.Y}");
-                GSS.World.worldCharacter.CameraPostition = (Ships[1].GetPos() / EngineSettings.TileSize) - (new Vector2(WorldInformation.mapWidth / 2, WorldInformation.mapHeight / 2) / EngineSettings.TileSize);
+Camera X:{GSS.World.worldCharacter.CameraPosition.X} Y:{GSS.World.worldCharacter.CameraPosition.Y}");
+                GSS.World.worldCharacter.CameraPosition = (Ships[1].GetPos() / EngineSettings.TileSize) - (new Vector2(WorldInformation.mapWidth / 2, WorldInformation.mapHeight / 2) / EngineSettings.TileSize);
             }
         }
         public void Draw()

@@ -25,6 +25,14 @@ namespace RPG.Library
 
         public Color GetColor(int x, int y)
         {
+            if (y < 0)
+            {
+                y = -y;
+            }
+            if (x < 0)
+            {
+                x = -x;
+            }
             int indx = (y * Width) + x;
             return Colors[indx];
 
