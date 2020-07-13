@@ -86,6 +86,7 @@ namespace RPG
         public static bool DebugEconomyMode { get; internal set; } = false;
         public static bool FreeCameraMode { get; internal set; } = false;
         public static bool LoggingEnabeled { get; internal set; } = false;
+        public static bool DebugMapX0Y0 { get; internal set; } = false;
 
         public static int MaxMoney = 99999999,
             Level = 99,

@@ -154,6 +154,10 @@ namespace RPG.Controlls
         {
             return Clicked(Keys.F3);
         }
+        public bool DontRenderTilesOnX0OrY0()
+        {
+            return Clicked(Keys.F4);
+        }
         public bool CameraFollowNext()
         {
             return Clicked(Keys.F10);

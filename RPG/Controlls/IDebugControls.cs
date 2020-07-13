@@ -7,5 +7,6 @@
         bool EnableFreeCameraMode();
         bool EnableLogging();
         bool CameraFollowNext();
+        bool DontRenderTilesOnX0OrY0();
     }
 }

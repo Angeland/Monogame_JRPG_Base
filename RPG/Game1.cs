@@ -147,6 +147,10 @@ namespace RPG
             {
                 GSS.FreeCameraMode = !GSS.FreeCameraMode;
             }
+            if (GSS.DebugControls.DontRenderTilesOnX0OrY0())
+            {
+                GSS.DebugMapX0Y0 = !GSS.DebugMapX0Y0;
+            }
             if (GSS.DebugControls.EnableLogging())
             {
                 GSS.LoggingEnabeled = !GSS.LoggingEnabeled;

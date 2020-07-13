@@ -3,26 +3,40 @@ using RPG.States.DebugHelp;
 
 namespace RPG.States.Animation
 {
-    public class AnimationRotator
+    public class AnimationRotator<T>
     {
-        private AnimationFunction function;
-        private readonly int maxIndex;
+        private readonly AnimationFunction function;
         private int activeIndex;
         private AnimationDirection direction;
         readonly float updateIntervall;
         float nextUpdateAfter = 0;
-        public AnimationRotator(AnimationFunction function, int maxIndex, float playTimeSeconds, AnimationDirection direction = AnimationDirection.FORWARD, int startIndex = 0)
+        readonly T[] ObjectCollection;
+        public AnimationRotator(T[] objectCollection, AnimationFunction function, float playTimeSeconds, AnimationDirection direction = AnimationDirection.FORWARD, int startIndex = 0)
         {
+            ObjectCollection = objectCollection;
             this.function = function;
-            this.maxIndex = maxIndex;
             this.direction = direction;
             activeIndex = startIndex;
-            updateIntervall = (playTimeSeconds * 1000) / maxIndex;
+            updateIntervall = (playTimeSeconds * 1000) / ObjectCollection.Length;
         }
 
         internal int ActiveIndex()
         {
             return activeIndex;
+        }
+
+        public T Get()
+        {
+            return ObjectCollection[activeIndex];
+        }
+        internal void Update(GameTime gameTime)
+        {
+            DebugConsole.WriteLine($"{typeof(T)} Animator TotalGameTime {gameTime.TotalGameTime.TotalMilliseconds} > {nextUpdateAfter}");
+            if (gameTime.TotalGameTime.TotalMilliseconds > nextUpdateAfter)
+            {
+                nextUpdateAfter += updateIntervall;
+                NextIndex();
+            }
         }
 
         private void NextIndex()
@@ -43,14 +57,14 @@ namespace RPG.States.Animation
             if (AnimationDirection.FORWARD == direction)
             {
                 activeIndex++;
-                if (activeIndex == maxIndex)
+                if (activeIndex == ObjectCollection.Length)
                     activeIndex = 0;
             }
             else
             {
                 activeIndex--;
                 if (activeIndex < 0)
-                    activeIndex = maxIndex - 1;
+                    activeIndex = ObjectCollection.Length - 1;
             }
         }
 
@@ -58,7 +72,7 @@ namespace RPG.States.Animation
         {
             if (AnimationDirection.FORWARD == direction)
             {
-                if (activeIndex == maxIndex - 1)
+                if (activeIndex == ObjectCollection.Length - 1)
                 {
                     direction = AnimationDirection.BACKWARD;
                     BackwardForwardMotion();
@@ -79,16 +93,6 @@ namespace RPG.States.Animation
                 {
                     activeIndex--;
                 }
-            }
-        }
-
-        internal void Update(GameTime gameTime)
-        {
-            DebugConsole.WriteLine($"TotalGameTime {gameTime.TotalGameTime.TotalMilliseconds} > {nextUpdateAfter}");
-            if (gameTime.TotalGameTime.TotalMilliseconds > nextUpdateAfter)
-            {
-                nextUpdateAfter += updateIntervall;
-                NextIndex();
             }
         }
     }

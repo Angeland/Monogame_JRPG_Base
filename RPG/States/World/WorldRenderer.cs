@@ -45,7 +45,6 @@ namespace RPG.States
 
         //Index of colors from the worldMap bitmap
         private Color[][] _worldMapSpriteSet;
-        private Color[] _activeWorldMapSprite;
         private readonly List<MapCloud> _cloudsInPlay = new List<MapCloud>();
         /// <summary>
         /// Map Index to show
@@ -66,7 +65,8 @@ namespace RPG.States
             _halfHeightPlus;
 
         private WorldAutoElements _autoElements;
-        private AnimationRotator _worldAnimator;
+        private AnimationRotator<Rectangle> _minimapSpriteAnimator;
+        private AnimationRotator<Color[]> _worldmapAnimator;
         #endregion
 
         #region Init code
@@ -84,7 +84,7 @@ namespace RPG.States
             cloudsTileCollection = GSS.TextureLoader.Clouds();
             Minimap = GSS.TextureLoader.Minimap();
             _worldMapAnimationSet = GSS.TextureLoader.WorldMaps();
-            _worldAnimator = new AnimationRotator(AnimationFunction.FORWARD_BACKWARD, _worldMapAnimationSet.Length, playTimeSeconds: 2f);
+            _minimapSpriteAnimator = new AnimationRotator<Rectangle>(_minimapLightAnimationSize, AnimationFunction.FORWARD_BACKWARD, playTimeSeconds: 2f);
 
             WorldInformation.mapWidth = (int)_worldMapAnimationSet.Size.X;
             WorldInformation.mapHeight = (int)_worldMapAnimationSet.Size.Y;
@@ -100,7 +100,8 @@ namespace RPG.States
                 _worldMapSpriteSet[a] = new Color[(int)(_worldMapAnimationSet.Size.X * _worldMapAnimationSet.Size.Y)];
                 _worldMapAnimationSet.GetTile(a).GetData(_worldMapSpriteSet[a]);
             }
-            _activeWorldMapSprite = _worldMapSpriteSet[_worldAnimator.ActiveIndex()];
+            _worldmapAnimator = new AnimationRotator<Color[]>(_worldMapSpriteSet, AnimationFunction.FORWARD_BACKWARD,  playTimeSeconds: 3f);
+
             WorldInformation.worldMapCheck = _worldMapSpriteSet[0];
 
             _tileUsedBy = new object[WorldInformation.mapHeight * WorldInformation.mapWidth];
@@ -118,7 +119,6 @@ namespace RPG.States
         private void RunInitWork()
         {
             _autoElements.BuildPreRequisites();
-
         }
         #endregion
 
@@ -133,9 +133,7 @@ namespace RPG.States
         }
         public bool MapLocationContainsElement(int x, int y)
         {
-            if (_tileUsedBy[(y * WorldInformation.mapWidth) + x] != default)
-                return true;
-            return false;
+            return _tileUsedBy[(y * WorldInformation.mapWidth) + x] != default;
         }
         public object GetObjectFromLocation(int x, int y)
         {
@@ -176,13 +174,11 @@ namespace RPG.States
 
         private void WorldMapAnimation(GameTime gameTime)
         {
-            _worldAnimator.Update(gameTime);
-            _activeWorldMapSprite = _worldMapSpriteSet[_worldAnimator.ActiveIndex()];
+            _minimapSpriteAnimator.Update(gameTime);
+            _worldmapAnimator.Update(gameTime);
             WorldMapClouds(gameTime);
 
             Vector2 pc = worldCharacter.GetCenterTilePosition();
-          //  pc += new Vector2(worldCharacter.WindowPosition.X / (float)EngineSettings.TileSize, worldCharacter.WindowPosition.Y / (float)EngineSettings.TileSize);
-
             pc /= WorldInformation.MapSize;
             pc *= new Vector2(_minimapW, _minimapH);
             minimapBeacon = new Point((int)pc.X, (int)pc.Y);
@@ -215,7 +211,9 @@ namespace RPG.States
             DrawClouds();
             //_minimapActive
             if (_minimapActive)
+            {
                 DrawMinimap();
+            }
 
             //GSS.ExtraOutput = "Time " + GSS.getTime().ToString("yyyy-MM-dd HH:mm:ss");
             GSS.SpriteBatch.End();
@@ -229,6 +227,7 @@ namespace RPG.States
             Vector2 cameraPostition = worldCharacter.CameraPosition;
             Point positionOffset = worldCharacter.PositionOffset + new Point(EngineSettings.TileSize, EngineSettings.TileSize);
 
+            int worldmapLength = _worldMapSpriteSet[0].Length;
             for (int yOffset = ((int)cameraPostition.Y * WorldInformation.mapWidth) - 1, TileY = -positionOffset.Y; yOffset < (int)(cameraPostition.Y + _halfWidthPlus) * WorldInformation.mapWidth; yOffset += WorldInformation.mapWidth, TileY += EngineSettings.TileSize)
             {
                 for (int x = (int)cameraPostition.X + yOffset, TileX = -positionOffset.X; x < (int)cameraPostition.X + _halfHeightPlus + yOffset + 1; x++, TileX += EngineSettings.TileSize)
@@ -241,19 +240,28 @@ namespace RPG.States
                         ColorIndex -= WorldInformation.mapWidth;
 
                     while (ColorIndex < 0)
-                        ColorIndex += _activeWorldMapSprite.Length;
-                    while (ColorIndex >= _activeWorldMapSprite.Length)
-                        ColorIndex -= _activeWorldMapSprite.Length;
+                        ColorIndex += worldmapLength;
+                    while (ColorIndex >= worldmapLength)
+                        ColorIndex -= worldmapLength;
 
-                    Color TileColor = _activeWorldMapSprite[ColorIndex];
+                    Color TileColor = _worldmapAnimator.Get()[ColorIndex];
 
                     if (TilePalette.TileColor.ContainsKey(TileColor))
                     {
                         Point t = GetCoordinate(ColorIndex);
                         int col = TilePalette.TileColor[TileColor];
-                        GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
-                            new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
-                           t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
+
+                        if (GSS.DebugMapX0Y0)
+                        {
+                            GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
+                                new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
+                               t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
+                        }
+                        else
+                        {
+                            GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
+                                new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize), _sunColor);
+                        }
                     }
                     else
                     {
@@ -289,9 +297,9 @@ namespace RPG.States
                 Color.White);
             //_minimapLightAnimationSize
             GSS.SpriteBatch.Draw(Minimap.Cursor(),
-                new Rectangle(minimapXoff + minimapBeacon.X - 8, minimapYoff + minimapBeacon.Y-10, 20, 20),
-                _minimapLightAnimationSize[_worldAnimator.ActiveIndex()],
-                Color.OrangeRed);
+                new Rectangle(minimapXoff + minimapBeacon.X - 8, minimapYoff + minimapBeacon.Y - 10, 20, 20),
+                _minimapSpriteAnimator.Get(),
+                new Color(255, 255, 0));
         }
         #endregion
     }
