@@ -9,7 +9,7 @@ namespace RPG.Textures
 {
     public interface IWorldCharacter
     {
-        void PlaceCamera();
+        Point WindowPosition { get; }
         Vector2 CameraPosition { get; set; }
         Vector2 GetPosition();
         Point PositionOffset { get; }

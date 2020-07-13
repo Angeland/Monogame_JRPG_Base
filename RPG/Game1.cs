@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using RPG.Exceptions;
 using RPG.Helper;
 using RPG.Library;
-using RPG.States.AutoElements;
-using RPG.States.Characters;
 using RPG.States.Configuration;
 using RPG.States.DebugHelp;
 using RPG.States.Scene;
@@ -13,6 +11,7 @@ using RPG.States.World;
 using RPG.Textures;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RPG
 {
@@ -21,8 +20,8 @@ namespace RPG
     /// </summary>
     public class Game1 : Game
     {
-        private float _consolePrintXPosition;
-        private float _consolePrintYPosition;
+        private const float _consolePrintXPosition = 25;
+        private const float _consolePrintYPosition = 25;
         private readonly FrameCounter FrameCounter = new FrameCounter();
 
         public Game1()
@@ -35,6 +34,12 @@ namespace RPG
             GSS.TextureLoader = new TextureLoader(Content);
         }
 
+        protected override void Initialize()
+        {
+            IsMouseVisible = true;
+            InitGraphicsMode();
+            base.Initialize();
+        }
         private void InitGraphicsMode()
         {
             DisplayOutputSettings.DisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
@@ -43,14 +48,6 @@ namespace RPG
             GraphicsSettings.ApplyChanges();
         }
 
-        protected override void Initialize()
-        {
-            _consolePrintXPosition = DisplayOutputSettings.ScreenWidth * 0.1f;
-            _consolePrintYPosition = DisplayOutputSettings.ScreenHeight * 0.1f;
-            IsMouseVisible = true;
-            InitGraphicsMode();
-            base.Initialize();
-        }
         protected override void LoadContent()
         {
             GSS.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -96,6 +93,9 @@ namespace RPG
 
         protected override void Update(GameTime gameTime)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             FrameCounter.Update(gameTime);
             DebugConsole.Reset();
             DebugKeyPress();
@@ -130,6 +130,7 @@ namespace RPG
                     break;
             }
             base.Update(gameTime);
+            DebugConsole.WriteLine($"Update {GSS.RenderState}: {sw.ElapsedMilliseconds}ms");
         }
 
         private void DebugKeyPress()
@@ -158,6 +159,8 @@ namespace RPG
 
         protected override void Draw(GameTime gameTime)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             GraphicsDevice.Clear(Color.Black);
             switch (GSS.RenderState)
             {
@@ -183,9 +186,14 @@ namespace RPG
 
                     break;
             }
+            DebugConsole.WriteLine($"Draw {GSS.RenderState}: {sw.ElapsedMilliseconds}ms");
+            WriteLogs();
+            base.Draw(gameTime);
+        }
 
+        private void WriteLogs()
+        {
             GSS.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
             if (GSS.LoggingEnabeled)
             {
                 DebugConsole.WriteLine($"FPS: {FrameCounter.AverageFramesPerSecond}");
@@ -194,9 +202,7 @@ namespace RPG
                     new Vector2(_consolePrintXPosition, _consolePrintYPosition),
                     Color.Orange);
             }
-
             GSS.SpriteBatch.End();
-            base.Draw(gameTime);
         }
     }
 }

@@ -28,28 +28,24 @@ namespace RPG.States.Characters
                                 (int)((_cameraPostition.X - (int)_cameraPostition.X) * EngineSettings.TileSize),
                                 (int)((_cameraPostition.Y - (int)_cameraPostition.Y) * EngineSettings.TileSize));
         int stepsSinceLastBattle = 0;
-        int CharacterX = 0;
-        int CharacterY = 0;
         int CharacterActiveTileX = 0;
         int CharacterActiveTileY = 0;
         int tx;
         int ty;
+
+        Rectangle CharacterRectangle = new Rectangle(
+            DisplayOutputSettings.CenterScreenTileOffsetX * EngineSettings.TileSize,
+            DisplayOutputSettings.CenterScreenTileOffsetY * EngineSettings.TileSize,
+            EngineSettings.TileSize, EngineSettings.TileSize);
+
+        public Point WindowPosition => new Point(CharacterRectangle.X, CharacterRectangle.Y);
 
 
         public World_Character(ContentManager content, string[] texturePaths) : base(content, texturePaths)
         {
             //Initial "Start" position
             //TODO: Get this from Save
-            _cameraPostition = new Vector2(550, 100);
-        }
-
-
-        public void PlaceCamera()
-        {
-            CharacterX = DisplayOutputSettings.CenterScreenTileOffsetX * EngineSettings.TileSize;
-            CharacterY = DisplayOutputSettings.CenterScreenTileOffsetY * EngineSettings.TileSize;
-            _cameraPostition.X -= DisplayOutputSettings.CenterScreenTileOffsetX;
-            _cameraPostition.Y -= DisplayOutputSettings.CenterScreenTileOffsetY;
+            _cameraPostition = new Vector2(550 - DisplayOutputSettings.CenterScreenTileOffsetX, 100 - DisplayOutputSettings.CenterScreenTileOffsetY);
         }
 
         public void Update(GameTime gameTime)
@@ -166,11 +162,30 @@ namespace RPG.States.Characters
         }
         public Vector2 GetCenterTilePosition()
         {
-            Vector2 location = _cameraPostition - new Vector2(DisplayOutputSettings.CenterScreenTileOffsetX, DisplayOutputSettings.CenterScreenTileOffsetY);
+            Vector2 location = _cameraPostition + new Vector2(
+                DisplayOutputSettings.CenterScreenTileOffsetX,
+                DisplayOutputSettings.CenterScreenTileOffsetY);
             return NormalizeAxis(location);
         }
         private Vector2 NormalizeAxis(Vector2 location)
         {
+            while (location.X < 0)
+            {
+                location.X += WorldInformation.MapSize.X;
+            }
+            while (location.X >= WorldInformation.MapSize.X)
+            {
+                location.X -= WorldInformation.MapSize.X;
+            }
+            while (location.Y < 0)
+            {
+                location.Y += WorldInformation.MapSize.Y;
+            }
+            while (location.Y >= WorldInformation.MapSize.Y)
+            {
+                location.Y -= WorldInformation.MapSize.Y;
+            }
+
             return location;
         }
         private void UpdateCharacter(Vector2 direction)
@@ -230,15 +245,9 @@ namespace RPG.States.Characters
                 }
             }
         }
-
         public void Draw()
         {
-            GSS.SpriteBatch.Draw(GetTexture(CharacterAnimationRow),
-                new Rectangle(
-                    CharacterX,
-                    CharacterY,
-                    EngineSettings.TileSize, EngineSettings.TileSize
-                    ), Color.White);
+            GSS.SpriteBatch.Draw(GetTexture(CharacterAnimationRow), CharacterRectangle, Color.White);
 
             if (GSS.DebugMode)
             {

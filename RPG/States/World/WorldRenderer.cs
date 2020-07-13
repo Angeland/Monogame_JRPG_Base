@@ -117,7 +117,6 @@ namespace RPG.States
         }
         private void RunInitWork()
         {
-            worldCharacter.PlaceCamera();
             _autoElements.BuildPreRequisites();
 
         }
@@ -182,6 +181,8 @@ namespace RPG.States
             WorldMapClouds(gameTime);
 
             Vector2 pc = worldCharacter.GetCenterTilePosition();
+          //  pc += new Vector2(worldCharacter.WindowPosition.X / (float)EngineSettings.TileSize, worldCharacter.WindowPosition.Y / (float)EngineSettings.TileSize);
+
             pc /= WorldInformation.MapSize;
             pc *= new Vector2(_minimapW, _minimapH);
             minimapBeacon = new Point((int)pc.X, (int)pc.Y);
@@ -288,7 +289,7 @@ namespace RPG.States
                 Color.White);
             //_minimapLightAnimationSize
             GSS.SpriteBatch.Draw(Minimap.Cursor(),
-                new Rectangle(minimapXoff + minimapBeacon.X, minimapYoff + minimapBeacon.Y, 20, 20),
+                new Rectangle(minimapXoff + minimapBeacon.X - 8, minimapYoff + minimapBeacon.Y-10, 20, 20),
                 _minimapLightAnimationSize[_worldAnimator.ActiveIndex()],
                 Color.OrangeRed);
         }

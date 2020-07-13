@@ -14,8 +14,8 @@ namespace RPG.States.Configuration
             set
             {
                 displayMode = value;
-                ScreenHeight = value.Height / 2;
-                ScreenWidth = value.Width / 2;
+                ScreenHeight = value.Height;
+                ScreenWidth = value.Width;
             }
         }
 
