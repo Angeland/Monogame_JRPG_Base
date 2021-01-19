@@ -1,4 +1,4 @@
-﻿namespace RPG.States.Configuration
+﻿namespace DreamsEnd.States.Configuration
 {
     public static class EngineSettings
     {

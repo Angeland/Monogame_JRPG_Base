@@ -1,7 +1,7 @@
-﻿using RPG.States.Characters.Individuals;
-using RPG.States.World;
+﻿using DreamsEnd.States.Characters.Individuals;
+using DreamsEnd.States.World;
 
-namespace RPG.States.Scene.SceneRigging
+namespace DreamsEnd.States.Scene.SceneRigging
 {
     class SceneRigger
     {

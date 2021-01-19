@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.Exceptions;
-using RPG.Textures;
+using DreamsEnd.Exceptions;
+using DreamsEnd.Textures;
 using System;
 
-namespace RPG.States
+namespace DreamsEnd.States
 {
     public class MainMenu : IDisposable
     {

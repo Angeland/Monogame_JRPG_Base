@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RPG.Exceptions
+namespace DreamsEnd.Exceptions
 {
     public static class EnumExtension
     {

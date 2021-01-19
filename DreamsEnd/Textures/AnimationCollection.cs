@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public class AnimationCollection: TextureCache, IAnimationCollection
     {

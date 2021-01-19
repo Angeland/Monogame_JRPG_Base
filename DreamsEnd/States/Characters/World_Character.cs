@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using RPG.States.Configuration;
-using RPG.States.DebugHelp;
-using RPG.States.World;
-using RPG.Textures;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.DebugHelp;
+using DreamsEnd.States.World;
+using DreamsEnd.Textures;
 using System;
 
-namespace RPG.States.Characters
+namespace DreamsEnd.States.Characters
 {
     public class World_Character : AnimationCollection, IWorldCharacter
     {

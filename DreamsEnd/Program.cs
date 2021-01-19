@@ -1,5 +1,4 @@
-﻿using RPG;
-using System;
+﻿using System;
 
 namespace DreamsEnd
 {

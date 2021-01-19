@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace RPG.States.World
+namespace DreamsEnd.States.World
 {
     public static class TilePalette
     {

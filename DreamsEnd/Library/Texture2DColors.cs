@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RPG.Library
+namespace DreamsEnd.Library
 {
     public class Texture2DColors
     {

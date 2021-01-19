@@ -1,4 +1,4 @@
-﻿namespace RPG.Controlls
+﻿namespace DreamsEnd.Controlls
 {
     public interface IDebugControls : IControls
     {

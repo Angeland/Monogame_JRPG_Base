@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.States.Configuration;
+using DreamsEnd.States.Configuration;
 
-namespace RPG.States
+namespace DreamsEnd.States
 {
     public class IngameMenu
     {

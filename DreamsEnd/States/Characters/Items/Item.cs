@@ -1,4 +1,4 @@
-﻿namespace RPG.States.Characters.Items
+﻿namespace DreamsEnd.States.Characters.Items
 {
     public class Item
     {

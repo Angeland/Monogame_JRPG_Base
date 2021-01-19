@@ -1,6 +1,6 @@
-﻿using RPG.States.Area.Cities;
+﻿using DreamsEnd.States.Area.Cities;
 
-namespace RPG.States.AutoElements
+namespace DreamsEnd.States.AutoElements
 {
     public class Cargo
     {

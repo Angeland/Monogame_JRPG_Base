@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.Library;
-using RPG.States.DebugHelp;
-using RPG.States.Scene.SceneRigging;
-using RPG.States.World;
+using DreamsEnd.Library;
+using DreamsEnd.States.DebugHelp;
+using DreamsEnd.States.Scene.SceneRigging;
+using DreamsEnd.States.World;
 using System.Collections.Generic;
 
-namespace RPG.States.Scene
+namespace DreamsEnd.States.Scene
 {
     public static class SceneWorker
     {

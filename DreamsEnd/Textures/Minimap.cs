@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public class Minimap : TextureCache
     {

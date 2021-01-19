@@ -1,4 +1,4 @@
-﻿namespace RPG.States
+﻿namespace DreamsEnd.States
 {
     public class Intro
     {

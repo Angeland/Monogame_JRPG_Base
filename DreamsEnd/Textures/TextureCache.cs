@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public class TextureCache : IDisposable
     {

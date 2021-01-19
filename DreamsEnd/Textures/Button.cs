@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.States.Configuration;
+using DreamsEnd.States.Configuration;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public class Button : TextureCache, IButton
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public interface IAnimationCollection
     {

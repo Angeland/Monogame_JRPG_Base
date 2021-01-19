@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RPG.States.Configuration
+namespace DreamsEnd.States.Configuration
 {
     public static class GraphicsSettings
     {

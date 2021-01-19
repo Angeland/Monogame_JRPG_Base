@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.States.World;
+using DreamsEnd.States.World;
 
-namespace RPG.Library
+namespace DreamsEnd.Library
 {
     public static class WorldHelp
     {

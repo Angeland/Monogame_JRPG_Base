@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.States.Characters;
-using RPG.States.Characters.Items;
+using DreamsEnd.States.Characters;
+using DreamsEnd.States.Characters.Items;
 using System.Collections.Generic;
 
-namespace RPG.States.Area.Cities
+namespace DreamsEnd.States.Area.Cities
 {
     public class City
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.Library;
-using RPG.States.Configuration;
-using RPG.States.World;
+using DreamsEnd.Library;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.World;
 using System;
 
-namespace RPG.States.Characters.Uniqe
+namespace DreamsEnd.States.Characters.Uniqe
 {
     class MapCloud
     {

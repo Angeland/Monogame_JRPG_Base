@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.Controlls;
-using RPG.States;
-using RPG.States.DebugEnums;
-using RPG.Textures;
+using DreamsEnd.Controlls;
+using DreamsEnd.States;
+using DreamsEnd.States.DebugEnums;
+using DreamsEnd.Textures;
 using System;
 using System.Diagnostics;
 
-namespace RPG
+namespace DreamsEnd
 {
     public enum RenderState
     {
@@ -59,8 +59,8 @@ namespace RPG
         public static GameState Dyn { get; set; } = new GameState();
 
         //Controller Input
-        public static IDebugControls DebugControls { get; set; } = new KeyboardControl();
-        public static IControls Controlls { get; set; } = DebugControls;//= new GamePadControl();
+        public static IDebugControls DebugControls { get; set; } = new GameControls();
+        public static IControls Controlls { get; set; } = DebugControls;
 
         public static SpriteBatch SpriteBatch { get; set; }
 

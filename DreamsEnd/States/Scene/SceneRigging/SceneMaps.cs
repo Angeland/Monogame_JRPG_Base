@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using RPG.Library;
-using RPG.States.World;
+using DreamsEnd.Library;
+using DreamsEnd.States.World;
 using System.Collections.Generic;
 
-namespace RPG.States.Scene.SceneRigging
+namespace DreamsEnd.States.Scene.SceneRigging
 {
     public static class SceneMaps
     {

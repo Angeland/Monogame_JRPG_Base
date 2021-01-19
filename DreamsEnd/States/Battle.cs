@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RPG.States
+namespace DreamsEnd.States
 {
     public class Battle
     {

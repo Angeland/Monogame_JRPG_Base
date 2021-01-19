@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.AI;
-using RPG.Library;
-using RPG.States.Area.Cities;
-using RPG.States.Configuration;
-using RPG.States.World;
+using DreamsEnd.AI;
+using DreamsEnd.Library;
+using DreamsEnd.States.Area.Cities;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.World;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace RPG.States.AutoElements
+namespace DreamsEnd.States.AutoElements
 {
     public class Ship
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace RPG.States.Animation
+namespace DreamsEnd.States.Animation
 {
     public enum AnimationDirection
     {

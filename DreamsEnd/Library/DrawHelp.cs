@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RPG.Library
+namespace DreamsEnd.Library
 {
     public static class DrawHelp
     {

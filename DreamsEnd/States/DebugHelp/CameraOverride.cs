@@ -1,5 +1,5 @@
 ﻿
-namespace RPG.States.DebugEnums
+namespace DreamsEnd.States.DebugEnums
 {
     public enum CameraOverride
     {

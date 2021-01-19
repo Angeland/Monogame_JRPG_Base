@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace RPG.States.Configuration
+namespace DreamsEnd.States.Configuration
 {
     public static class DisplayOutputSettings
     {

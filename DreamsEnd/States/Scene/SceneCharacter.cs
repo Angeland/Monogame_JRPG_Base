@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RPG.States.Characters.Individuals
+namespace DreamsEnd.States.Characters.Individuals
 {
     public class SceneCharacter : Character
     {

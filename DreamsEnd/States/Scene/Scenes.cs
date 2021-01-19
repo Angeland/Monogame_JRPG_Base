@@ -1,5 +1,5 @@
 ﻿
-namespace RPG.States.World
+namespace DreamsEnd.States.World
 {
     public enum Scenes
     {

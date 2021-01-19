@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.States.AutoElements;
-using RPG.States.Characters;
+using DreamsEnd.States.AutoElements;
+using DreamsEnd.States.Characters;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public class TextureLoader
     {

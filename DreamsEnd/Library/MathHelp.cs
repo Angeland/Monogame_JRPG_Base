@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace RPG.Library
+namespace DreamsEnd.Library
 {
     public static class MathHelp
     {

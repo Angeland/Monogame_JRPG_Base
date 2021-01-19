@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.States.Area.Cities;
-using RPG.States.Configuration;
-using RPG.States.DebugEnums;
-using RPG.States.DebugHelp;
-using RPG.States.World;
+using DreamsEnd.States.Area.Cities;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.DebugEnums;
+using DreamsEnd.States.DebugHelp;
+using DreamsEnd.States.World;
 using System;
 using System.Collections.Generic;
 
-namespace RPG.States.AutoElements
+namespace DreamsEnd.States.AutoElements
 {
     public class WorldAutoElements
     {

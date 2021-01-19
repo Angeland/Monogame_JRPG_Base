@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RPG.States.World
+namespace DreamsEnd.States.World
 {
     public static class WorldInformation
     {

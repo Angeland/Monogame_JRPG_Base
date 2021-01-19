@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.States.AutoElements;
+using DreamsEnd.States.AutoElements;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RPG.States.Area.Cities
+namespace DreamsEnd.States.Area.Cities
 {
     public class Harbour
     {

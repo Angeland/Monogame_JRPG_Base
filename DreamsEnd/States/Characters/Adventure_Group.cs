@@ -1,7 +1,7 @@
-﻿using RPG.States.Characters.Items;
+﻿using DreamsEnd.States.Characters.Items;
 using System.Collections.Generic;
 
-namespace RPG.States.Characters
+namespace DreamsEnd.States.Characters
 {
     class Adventure_Group
     {

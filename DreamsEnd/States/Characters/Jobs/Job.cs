@@ -1,4 +1,4 @@
-﻿namespace RPG.States.Characters.Jobs
+﻿namespace DreamsEnd.States.Characters.Jobs
 {
     public class Owner : IJob
     {

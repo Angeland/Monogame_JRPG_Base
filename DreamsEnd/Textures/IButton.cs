@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public interface IButton: IDisposable
     {

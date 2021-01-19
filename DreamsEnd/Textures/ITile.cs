@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPG.Textures
+namespace DreamsEnd.Textures
 {
     public interface ITile : IDisposable
     {

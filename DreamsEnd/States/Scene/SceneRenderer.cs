@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.Library;
-using RPG.States.Characters.Individuals;
-using RPG.States.Configuration;
-using RPG.States.Scene;
-using RPG.States.Scene.SceneRigging;
+using DreamsEnd.Library;
+using DreamsEnd.States.Characters.Individuals;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.Scene;
+using DreamsEnd.States.Scene.SceneRigging;
 
-namespace RPG.States
+namespace DreamsEnd.States
 {
     public abstract class SceneRenderer
     {

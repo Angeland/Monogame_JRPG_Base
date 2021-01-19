@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RPG.Helper
+namespace DreamsEnd.Helper
 {
     public class FrameCounter
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.States.Configuration;
+using DreamsEnd.States.Configuration;
 
-namespace RPG.Library
+namespace DreamsEnd.Library
 {
     public static class CameraHelp
     {

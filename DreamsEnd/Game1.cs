@@ -1,12 +1,12 @@
-﻿using RPG.Exceptions;
-using RPG.Helper;
-using RPG.Library;
-using RPG.States.Configuration;
-using RPG.States.DebugHelp;
-using RPG.States.Scene;
-using RPG.States.Scene.SceneRigging;
-using RPG.States.World;
-using RPG.Textures;
+﻿using DreamsEnd.Exceptions;
+using DreamsEnd.Helper;
+using DreamsEnd.Library;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.DebugHelp;
+using DreamsEnd.States.Scene;
+using DreamsEnd.States.Scene.SceneRigging;
+using DreamsEnd.States.World;
+using DreamsEnd.Textures;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace RPG
+namespace DreamsEnd
 {
     /// <summary>
     /// This is the main type for your game.

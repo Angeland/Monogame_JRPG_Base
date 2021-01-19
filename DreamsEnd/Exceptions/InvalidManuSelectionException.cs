@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPG.Exceptions
+namespace DreamsEnd.Exceptions
 {
     public class InvalidManuSelectionException : Exception
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using RPG.States.DebugHelp;
+using DreamsEnd.States.DebugHelp;
 
-namespace RPG.States.Animation
+namespace DreamsEnd.States.Animation
 {
     public class AnimationRotator<T>
     {

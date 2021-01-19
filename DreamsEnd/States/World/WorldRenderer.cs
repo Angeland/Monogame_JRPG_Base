@@ -1,18 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RPG.States.Animation;
-using RPG.States.AutoElements;
-using RPG.States.Characters;
-using RPG.States.Characters.Uniqe;
-using RPG.States.Configuration;
-using RPG.States.Scene;
-using RPG.States.World;
-using RPG.Textures;
+using DreamsEnd.States.Animation;
+using DreamsEnd.States.AutoElements;
+using DreamsEnd.States.Characters;
+using DreamsEnd.States.Characters.Uniqe;
+using DreamsEnd.States.Configuration;
+using DreamsEnd.States.Scene;
+using DreamsEnd.States.World;
+using DreamsEnd.Textures;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace RPG.States
+namespace DreamsEnd.States
 {
     public class WorldRenderer
     {

@@ -1,8 +1,8 @@
-﻿using RPG.States.Characters.Items;
+﻿using DreamsEnd.States.Characters.Items;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RPG.States.Area.Cities
+namespace DreamsEnd.States.Area.Cities
 {
     class Shop
     {

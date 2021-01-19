@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace RPG.States.DebugHelp
+namespace DreamsEnd.States.DebugHelp
 {
     public class DebugConsole
     {
