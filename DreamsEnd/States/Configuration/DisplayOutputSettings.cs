@@ -15,7 +15,7 @@ namespace DreamsEnd.States.Configuration
             {
                 displayMode = value;
                 ScreenHeight = value.Height;
-                ScreenWidth = value.Width;
+                ScreenWidth = 2560; //value.Width;
             }
         }
 
