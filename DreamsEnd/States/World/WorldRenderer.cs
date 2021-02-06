@@ -11,6 +11,7 @@ using DreamsEnd.Textures;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System;
 
 namespace DreamsEnd.States
 {
@@ -25,8 +26,8 @@ namespace DreamsEnd.States
         /// <summary>
         /// List of tiles to use
         /// </summary>
-        private ITilesCollection cloudsTileCollection;
-        private ITilesCollection mapTileCollection;
+        private ITilesCollection cloudsTileCollection { get; set; }
+        private ITilesCollection MapTileCollection { get; set; }
         public Minimap Minimap { get; private set; }
 
         /// <summary>
@@ -79,8 +80,11 @@ namespace DreamsEnd.States
         /// <param name="Outofbound">Fallback texture to use on tiles not render-able</param>
         public void LoadWorld()
         {
+            MapTileCollection = GSS.TextureLoader.WorldMapTiles();
             _autoElements = GSS.TextureLoader.WorldAutoElements();
+            _autoElements.SetMapTileCollection(MapTileCollection);
             worldCharacter = GSS.TextureLoader.WorldCharacter();
+            worldCharacter.SetMapTileCollection(MapTileCollection);
             cloudsTileCollection = GSS.TextureLoader.Clouds();
             Minimap = GSS.TextureLoader.Minimap();
             _worldMapAnimationSet = GSS.TextureLoader.WorldMaps();
@@ -91,7 +95,6 @@ namespace DreamsEnd.States
             _minimapW = (int)(DisplayOutputSettings.ScreenWidth * 0.2);
             _minimapH = (int)(DisplayOutputSettings.ScreenHeight * 0.2);
 
-            mapTileCollection = GSS.TextureLoader.WorldMapTiles();
 
             int mapCount = _worldMapAnimationSet.Length;
             _worldMapSpriteSet = new Color[mapCount][];
@@ -100,7 +103,7 @@ namespace DreamsEnd.States
                 _worldMapSpriteSet[a] = new Color[(int)(_worldMapAnimationSet.Size.X * _worldMapAnimationSet.Size.Y)];
                 _worldMapAnimationSet.GetTile(a).GetData(_worldMapSpriteSet[a]);
             }
-            _worldmapAnimator = new AnimationRotator<Color[]>(_worldMapSpriteSet, AnimationFunction.FORWARD_BACKWARD,  playTimeSeconds: 3f);
+            _worldmapAnimator = new AnimationRotator<Color[]>(_worldMapSpriteSet, AnimationFunction.FORWARD_BACKWARD, playTimeSeconds: 3f);
 
             WorldInformation.worldMapCheck = _worldMapSpriteSet[0];
 
@@ -113,12 +116,12 @@ namespace DreamsEnd.States
             _halfWidthPlus = (int)(DisplayOutputSettings.ScreenHeight / (float)EngineSettings.TileSize) + 2;
 
             minimapXoff = DisplayOutputSettings.ScreenWidth - _minimapW - 10;
-            RunInitWork();
+            RunInitWork(MapTileCollection);
             sw.Start();
         }
-        private void RunInitWork()
+        private void RunInitWork(ITilesCollection mapTileCollection)
         {
-            _autoElements.BuildPreRequisites();
+            _autoElements.BuildPreRequisites(mapTileCollection);
         }
         #endregion
 
@@ -226,7 +229,6 @@ namespace DreamsEnd.States
         {
             Vector2 cameraPostition = worldCharacter.CameraPosition;
             Point positionOffset = worldCharacter.PositionOffset + new Point(EngineSettings.TileSize, EngineSettings.TileSize);
-
             int worldmapLength = _worldMapSpriteSet[0].Length;
             for (int yOffset = ((int)cameraPostition.Y * WorldInformation.mapWidth) - 1, TileY = -positionOffset.Y; yOffset < (int)(cameraPostition.Y + _halfWidthPlus) * WorldInformation.mapWidth; yOffset += WorldInformation.mapWidth, TileY += EngineSettings.TileSize)
             {
@@ -245,27 +247,25 @@ namespace DreamsEnd.States
                         ColorIndex -= worldmapLength;
 
                     Color TileColor = _worldmapAnimator.Get()[ColorIndex];
-
-                    if (TilePalette.TileColor.ContainsKey(TileColor))
+                    if (MapTileCollection.ContainsTile(TileColor))
                     {
                         Point t = GetCoordinate(ColorIndex);
-                        int col = TilePalette.TileColor[TileColor];
 
                         if (GSS.DebugMapX0Y0)
                         {
-                            GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
+                            GSS.SpriteBatch.Draw(MapTileCollection.GetTile(TileColor),
                                 new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
                                t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
                         }
                         else
                         {
-                            GSS.SpriteBatch.Draw(mapTileCollection.GetTile(col),
+                            GSS.SpriteBatch.Draw(MapTileCollection.GetTile(TileColor),
                                 new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize), _sunColor);
                         }
                     }
                     else
                     {
-                        GSS.SpriteBatch.Draw(mapTileCollection.GetTile(),
+                        GSS.SpriteBatch.Draw(MapTileCollection.GetTile(),
                             new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
                             new Color(0, 0, 0));
                     }

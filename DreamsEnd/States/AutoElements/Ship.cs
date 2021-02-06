@@ -8,12 +8,12 @@ using DreamsEnd.States.World;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using DreamsEnd.Textures;
 
 namespace DreamsEnd.States.AutoElements
 {
     public class Ship
     {
-        private Pathfinder _pf = new Pathfinder();
         private TimeSpan _waitTime;
         private readonly Texture2D _texture;
         private Vector2 _size;
@@ -22,6 +22,7 @@ namespace DreamsEnd.States.AutoElements
         private Vector2 _cameraPos;
         private Vector2 _startPosition;
         private Vector2 _goalPosition;
+        private ITilesCollection _mapTileCollection;
         private Vector2 _fromOff = Vector2.Zero;
         private readonly Harbour _home;
         private readonly Harbour _destination;
@@ -43,8 +44,9 @@ namespace DreamsEnd.States.AutoElements
         private float _rotationAngle = 0;
         private Vector2 _origin = Vector2.Zero;
 
-        public Ship(TimeSpan waitTime, Texture2D texture, Cargo cargo, Harbour Home, Harbour Destination, int speed)
+        public Ship(TimeSpan waitTime, Texture2D texture, Cargo cargo, Harbour Home, Harbour Destination, int speed, ITilesCollection mapTileCollection)
         {
+            _mapTileCollection = mapTileCollection;
             _fromOff = new Vector2((WorldInformation.mapWidth / 2) - Home.getLocation().X, (WorldInformation.mapHeight / 2) - Home.getLocation().Y);
             _waitTime = waitTime;
             _texture = texture;
@@ -62,14 +64,14 @@ namespace DreamsEnd.States.AutoElements
         {
             return _position;
         }
-        public void BuildPreRequisites()
+        public void BuildPreRequisites(ITilesCollection mapTileCollection)
         {
             new Thread(new ThreadStart(() =>
             {
-                _pf = new Pathfinder();
-                _pathAtoB = GetPath(_home.getLocation(), _destination.getLocation());
-                _pf = new Pathfinder();
-                _pathBtoA = GetPath(_destination.getLocation(), _home.getLocation());
+                _pathAtoB = new Pathfinder(mapTileCollection)
+                .GetPath(_home.getLocation(), _destination.getLocation(), _size);
+                _pathBtoA = new Pathfinder(mapTileCollection)
+                .GetPath(_destination.getLocation(), _home.getLocation(), _size);
                 SetPath();
                 _pathCalculated = true;
             })).Start();
@@ -132,10 +134,6 @@ namespace DreamsEnd.States.AutoElements
             float circle = MathHelper.Pi * 2;
             _rotationAngle %= circle;
         }
-        List<Vector2> GetPath(Vector2 A, Vector2 B)
-        {
-            return _pf.GetPath(A, B, _size);
-        }
         public bool WithinCamera(Vector2 cameraPos)
         {
             return CameraHelp.WithinCamera(cameraPos, _position, _size);
@@ -154,14 +152,7 @@ namespace DreamsEnd.States.AutoElements
         {
             if (GSS.DebugMode)
             {
-                if (_pathCalculated)
-                {
-                    DrawOnMap();
-                }
-                else
-                {
-                    _pf.Draw(_texture);
-                }
+                DrawOnMap();
             }
         }
         private void DrawOnMap()

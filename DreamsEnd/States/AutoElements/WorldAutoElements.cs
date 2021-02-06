@@ -7,12 +7,15 @@ using DreamsEnd.States.DebugHelp;
 using DreamsEnd.States.World;
 using System;
 using System.Collections.Generic;
+using DreamsEnd.Textures;
 
 namespace DreamsEnd.States.AutoElements
 {
     public class WorldAutoElements
     {
         readonly List<Ship> Ships = new List<Ship>();
+        private ITilesCollection _mapTileCollection;
+
         public void Init(Texture2D smallBoat)
         {
             City Newton = new City(new Vector2(170, 195));
@@ -21,17 +24,17 @@ namespace DreamsEnd.States.AutoElements
 
             //Ship 1
             Cargo Newton_Shackville_Cargo = new Cargo(50);
-            Ship Newton_Shackville = new Ship(new TimeSpan(1, 30, 0), smallBoat, Newton_Shackville_Cargo, Shackville.GetHarbor(), Newton.GetHarbor(), 6);
+            Ship Newton_Shackville = new Ship(new TimeSpan(1, 30, 0), smallBoat, Newton_Shackville_Cargo, Shackville.GetHarbor(), Newton.GetHarbor(), 6, _mapTileCollection);
             Ships.Add(Newton_Shackville);
 
             //Ship 2
             Cargo Shackville_Cargo = new Cargo(30);
-            Ship Newton_Shackville2 = new Ship(new TimeSpan(1, 30, 0), smallBoat, Shackville_Cargo, Newton.GetHarbor(), Island.GetHarbor(), 6);
+            Ship Newton_Shackville2 = new Ship(new TimeSpan(1, 30, 0), smallBoat, Shackville_Cargo, Newton.GetHarbor(), Island.GetHarbor(), 6, _mapTileCollection);
             Ships.Add(Newton_Shackville2);
         }
-        public void BuildPreRequisites()
+        public void BuildPreRequisites(ITilesCollection mapTileCollection)
         {
-            Ships.ForEach(a => a.BuildPreRequisites());
+            Ships.ForEach(a => a.BuildPreRequisites(mapTileCollection));
         }
         public void Update(GameTime gametime)
         {
@@ -54,6 +57,11 @@ Camera X:{GSS.World.worldCharacter.CameraPosition.X} Y:{GSS.World.worldCharacter
                      new Rectangle(0, 0, DisplayOutputSettings.ScreenWidth, DisplayOutputSettings.ScreenHeight), Color.White);
             }
             Ships.ForEach(a => a.Draw());
+        }
+
+        internal void SetMapTileCollection(ITilesCollection mapTileCollection)
+        {
+            _mapTileCollection = mapTileCollection;
         }
     }
 }

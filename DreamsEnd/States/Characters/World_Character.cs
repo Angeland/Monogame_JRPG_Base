@@ -37,6 +37,7 @@ namespace DreamsEnd.States.Characters
             DisplayOutputSettings.CenterScreenTileOffsetX * EngineSettings.TileSize,
             DisplayOutputSettings.CenterScreenTileOffsetY * EngineSettings.TileSize,
             EngineSettings.TileSize, EngineSettings.TileSize);
+        private ITilesCollection _mapTileCollection;
 
         public Point WindowPosition => new Point(CharacterRectangle.X, CharacterRectangle.Y);
 
@@ -48,6 +49,10 @@ namespace DreamsEnd.States.Characters
             _cameraPostition = new Vector2(550 - DisplayOutputSettings.CenterScreenTileOffsetX, 100 - DisplayOutputSettings.CenterScreenTileOffsetY);
         }
 
+        public void SetMapTileCollection(ITilesCollection mapTileCollection)
+        {
+            _mapTileCollection = mapTileCollection;
+        }
         public void Update(GameTime gameTime)
         {
             WalkSpeed();
@@ -141,7 +146,7 @@ namespace DreamsEnd.States.Characters
 
             tx = (int)(futurePos.X + DisplayOutputSettings.CenterScreenTileOffsetX);
             ty = (int)(futurePos.Y + DisplayOutputSettings.CenterScreenTileOffsetY + 1);
-            return TilePalette.IsWalkable(tx, ty);
+            return _mapTileCollection.IsWalkable(tx, ty);
         }
 
         private bool BattleChance()
@@ -261,5 +266,6 @@ namespace DreamsEnd.States.Characters
             }
             DebugConsole.WriteLine($"GameTime {GSS.GetTime():dd-mmm-yyyy HH:mm:ss}");
         }
+
     }
 }

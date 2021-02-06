@@ -16,5 +16,6 @@ namespace DreamsEnd.Textures
         Vector2 GetCenterTilePosition();
         void Update(GameTime gameTime);
         void Draw();
+        void SetMapTileCollection(ITilesCollection mapTileCollection);
     }
 }

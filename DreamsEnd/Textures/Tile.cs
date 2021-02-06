@@ -4,24 +4,16 @@ namespace DreamsEnd.Textures
 {
     public class Tile : ITile
     {
-        public string TexturePath { get; private set; }
+        public string TexturePath { get; }
+        public TileProperties TileProperties { get; }
 
         public Tile(string texturePath)
         {
             TexturePath = texturePath;
         }
-        public void Dispose()
+        public Tile(string texturePath, TileProperties tileProperties) : this(texturePath)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                TexturePath = null;
-            }
+            TileProperties = tileProperties;
         }
     }
 }

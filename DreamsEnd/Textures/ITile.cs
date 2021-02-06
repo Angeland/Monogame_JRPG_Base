@@ -2,8 +2,9 @@
 
 namespace DreamsEnd.Textures
 {
-    public interface ITile : IDisposable
+    public interface ITile
     {
         string TexturePath { get; }
+        TileProperties TileProperties{ get; }
     }
 }

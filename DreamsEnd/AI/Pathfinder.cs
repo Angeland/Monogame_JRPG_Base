@@ -6,6 +6,7 @@ using DreamsEnd.States.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DreamsEnd.Textures;
 
 namespace DreamsEnd.AI
 {
@@ -20,7 +21,12 @@ namespace DreamsEnd.AI
         private List<Node> OpenList = new List<Node>();
         private List<Vector2> ClosedList = new List<Vector2>();
         private bool[,] Visited;
+        private ITilesCollection _mapTileCollection;
 
+        public Pathfinder(ITilesCollection mapTileCollection)
+        {
+            _mapTileCollection = mapTileCollection;
+        }
 
         public List<Vector2> GetPath(Vector2 Start, Vector2 Goal, Vector2 ElementSize)
         {
@@ -90,7 +96,7 @@ namespace DreamsEnd.AI
                             {
                                 continue;
                             }
-                            else if (TilePalette.IsTileSailable((int)correctedNewPos.X, (int)correctedNewPos.Y, _elementSize))
+                            else if (_mapTileCollection.IsTileSailable((int)correctedNewPos.X, (int)correctedNewPos.Y, _elementSize))
                             {
                                 Node newNode = new Node()
                                 {
