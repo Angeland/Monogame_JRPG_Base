@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System;
+using Microsoft.Xna.Framework.Input;
+using DreamsEnd.States.DebugHelp;
 
 namespace DreamsEnd.States
 {
@@ -212,6 +214,10 @@ namespace DreamsEnd.States
             _autoElements.Draw();
             //Clouds
             DrawClouds();
+            if (GSS.LoggingEnabeled)
+            {
+                ActivateTileUnderMouse();
+            }
             //_minimapActive
             if (_minimapActive)
             {
@@ -229,6 +235,7 @@ namespace DreamsEnd.States
         {
             Vector2 cameraPostition = worldCharacter.CameraPosition;
             Point positionOffset = worldCharacter.PositionOffset + new Point(EngineSettings.TileSize, EngineSettings.TileSize);
+
             int worldmapLength = _worldMapSpriteSet[0].Length;
             for (int yOffset = ((int)cameraPostition.Y * WorldInformation.mapWidth) - 1, TileY = -positionOffset.Y; yOffset < (int)(cameraPostition.Y + _halfWidthPlus) * WorldInformation.mapWidth; yOffset += WorldInformation.mapWidth, TileY += EngineSettings.TileSize)
             {
@@ -277,6 +284,31 @@ namespace DreamsEnd.States
                 }
             }
         }
+
+
+        private void ActivateTileUnderMouse()
+        {
+            MouseState mm = Mouse.GetState();
+
+            Vector2 cameraPostition = worldCharacter.CameraPosition;
+            Point positionOffset = worldCharacter.PositionOffset;
+            Vector2 mouseWorldPosition = new Vector2(cameraPostition.X + mm.X, cameraPostition.Y + mm.Y);
+            DebugConsole.WriteLine($"Mouse global tile X:{mouseWorldPosition.X} Y:{mouseWorldPosition.Y}");
+
+            DebugConsole.WriteLine($"Mouse onscreen position X:{mm.X} Y:{mm.Y}");
+
+            var x = mm.X/ EngineSettings.TileSize;
+            var y = mm.Y/ EngineSettings.TileSize;
+            int finalX = (x * EngineSettings.TileSize)- positionOffset.X+;
+            int finalY = (y * EngineSettings.TileSize)- positionOffset.Y;
+            DebugConsole.WriteLine($"positionOffset X:{positionOffset.X} Y:{positionOffset.Y}");
+            DebugConsole.WriteLine($"Mouse onscreen tile X:{finalX} Y:{finalY}");
+
+            GSS.SpriteBatch.Draw(MapTileCollection.GetTexture(),
+                new Rectangle(new Point(finalX, finalY), TileSize),
+                Color.Black);
+        }
+
         private static readonly Point TileSize = new Point(EngineSettings.TileSize, EngineSettings.TileSize);
         private Point GetCoordinate(int ColorIndex)
         {
