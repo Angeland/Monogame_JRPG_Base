@@ -101,7 +101,7 @@ namespace DreamsEnd.States
             for (int a = 0; a < mapCount; a++)
             {
                 _worldMapSpriteSet[a] = new Color[(int)(_worldMapAnimationSet.Size.X * _worldMapAnimationSet.Size.Y)];
-                _worldMapAnimationSet.GetTile(a).GetData(_worldMapSpriteSet[a]);
+                _worldMapAnimationSet.GetTexture(a).GetData(_worldMapSpriteSet[a]);
             }
             _worldmapAnimator = new AnimationRotator<Color[]>(_worldMapSpriteSet, AnimationFunction.FORWARD_BACKWARD, playTimeSeconds: 3f);
 
@@ -194,7 +194,7 @@ namespace DreamsEnd.States
 
             if (_cloudsInPlay.Count < 500)
             {
-                MapCloud newCloud = new MapCloud(cloudsTileCollection.GetTile().Width, cloudsTileCollection.GetTile().Height);
+                MapCloud newCloud = new MapCloud(cloudsTileCollection.GetTexture().Width, cloudsTileCollection.GetTexture().Height);
                 _cloudsInPlay.Add(newCloud);
             }
         }
@@ -203,7 +203,7 @@ namespace DreamsEnd.States
         #region Draw code
         public void Draw()
         {
-            GSS.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.DepthRead, RasterizerState.CullNone);
+            GSS.SpriteBatch.Begin();
             //World-map
             DrawWorldMap();
             //Player on Screen
@@ -247,32 +247,37 @@ namespace DreamsEnd.States
                         ColorIndex -= worldmapLength;
 
                     Color TileColor = _worldmapAnimator.Get()[ColorIndex];
+                    Point location = new Point(TileX, TileY);
                     if (MapTileCollection.ContainsTile(TileColor))
                     {
-                        Point t = GetCoordinate(ColorIndex);
+
+                        if (MapTileCollection.HasSubTexture(TileColor))
+                        {
+                            GSS.SpriteBatch.Draw(MapTileCollection.GetSubTexture(TileColor),
+                                new Rectangle(location, TileSize), _sunColor);
+                        }
 
                         if (GSS.DebugMapX0Y0)
                         {
-                            GSS.SpriteBatch.Draw(MapTileCollection.GetTile(TileColor),
-                                new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
-                               t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
+                            Point t = GetCoordinate(ColorIndex);
+                            GSS.SpriteBatch.Draw(MapTileCollection.GetTexture(TileColor),
+                                new Rectangle(location, TileSize),
+                                t.X == 0 || t.Y == 0 ? new Color(0, 0, 0) : _sunColor);
                         }
                         else
                         {
-                            GSS.SpriteBatch.Draw(MapTileCollection.GetTile(TileColor),
-                                new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize), _sunColor);
+                            GSS.SpriteBatch.Draw(MapTileCollection.GetTexture(TileColor),
+                                new Rectangle(location, TileSize), _sunColor);
                         }
                     }
                     else
                     {
-                        GSS.SpriteBatch.Draw(MapTileCollection.GetTile(),
-                            new Rectangle(TileX, TileY, EngineSettings.TileSize, EngineSettings.TileSize),
-                            new Color(0, 0, 0));
+                        GSS.SpriteBatch.Draw(MapTileCollection.GetTexture(), new Rectangle(location, TileSize), Color.Black);
                     }
                 }
             }
         }
-
+        private static readonly Point TileSize = new Point(EngineSettings.TileSize, EngineSettings.TileSize);
         private Point GetCoordinate(int ColorIndex)
         {
             int y = ColorIndex / WorldInformation.mapWidth;
@@ -286,7 +291,7 @@ namespace DreamsEnd.States
             foreach (MapCloud a in _cloudsInPlay.Where(b => b.WithinCamera(pos)))
             {
                 inViewCount++;
-                GSS.SpriteBatch.Draw(cloudsTileCollection.GetTile(), a.GetShape(pos), a.GetColor(_sunColor));
+                GSS.SpriteBatch.Draw(cloudsTileCollection.GetTexture(), a.GetShape(pos), a.GetColor(_sunColor));
             }
         }
         private void DrawMinimap()

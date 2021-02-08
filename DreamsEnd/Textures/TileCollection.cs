@@ -26,7 +26,7 @@ namespace DreamsEnd.Textures
             {
                 if (tile.TileProperties != null)
                 {
-                    TileProperties.Add(tile.TileProperties.tileColor, tile.TileProperties);
+                    TileProperties.Add(tile.TileProperties.TileColor, tile.TileProperties);
                 }
             }
             TilesMap = new Dictionary<Color, ITile>();
@@ -34,7 +34,7 @@ namespace DreamsEnd.Textures
             {
                 if (tile.TileProperties != null)
                 {
-                    TilesMap.Add(tile.TileProperties.tileColor, tile);
+                    TilesMap.Add(tile.TileProperties.TileColor, tile);
                 }
             }
         }
@@ -78,14 +78,22 @@ namespace DreamsEnd.Textures
             return new Vector2(tex.Width, tex.Height);
         }
 
-        public Texture2D GetTile(int index)
+        public Texture2D GetTexture(int index)
         {
             return GetTexture(Tiles[index].TexturePath);
         }
 
-        public Texture2D GetTile(Color tileColor)
+        public Texture2D GetTexture(Color tileColor)
         {
             return GetTexture(TilesMap[tileColor].TexturePath);
+        }
+        public Texture2D GetSubTexture(Color tileColor)
+        {
+            return GetTexture(TilesMap[tileColor].TileProperties.SubTexturePath);
+        }
+        public bool HasSubTexture(Color tileColor)
+        {
+            return TilesMap[tileColor].TileProperties.SubTexturePath != default;
         }
 
         protected override void Dispose(bool disposing)

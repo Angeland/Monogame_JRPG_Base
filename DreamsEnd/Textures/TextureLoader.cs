@@ -32,7 +32,7 @@ namespace DreamsEnd.Textures
             ITile[] tiles = new ITile[]
             {
                 new Tile("Graphics/Maps/WorldMap/Overlay/Land/Grass", new TileProperties{
-                tileColor = new Color(34, 177, 76),
+                TileColor = new Color(34, 177, 76),
                 Walkable = true
                 }),
                 /*
@@ -41,55 +41,56 @@ namespace DreamsEnd.Textures
                 Walkable = true
                 }),*/
                 new Tile("Graphics/Maps/WorldMap/Overlay/Land/Sand", new TileProperties{
-                tileColor = new Color(239, 228, 176),
+                TileColor = new Color(239, 228, 176),
                 Walkable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/Water/Shallow", new TileProperties{
-                tileColor = new Color(153, 217, 234),
+                TileColor = new Color(153, 217, 234),
                 Walkable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/Water/Ocean", new TileProperties{
-                tileColor = new Color(0, 162, 232),
+                TileColor = new Color(0, 162, 232),
                 Sailable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/Water/DeepOcean", new TileProperties{
-                tileColor = new Color(63, 72, 204),
+                TileColor = new Color(63, 72, 204),
                 Sailable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/CityGround", new TileProperties{
-                tileColor = new Color(195, 195, 195),
+                TileColor = new Color(195, 195, 195),
                 Walkable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/CityWall", new TileProperties{
-                tileColor = new Color(127, 127, 127)
+                TileColor = new Color(127, 127, 127),
+                SubTexturePath = "Graphics/Maps/WorldMap/Overlay/City/CityGround"
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/Harbour", new TileProperties{
-                tileColor = new Color(185, 122, 87),
+                TileColor = new Color(185, 122, 87),
                 Walkable = true
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofStoneUp", new TileProperties{
-                tileColor = new Color(201, 151, 124)
+                TileColor = new Color(201, 151, 124)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofStoneDown", new TileProperties{
-                tileColor = new Color(206, 175, 119)
+                TileColor = new Color(206, 175, 119)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofStoneRight", new TileProperties{
-                tileColor = new Color(216, 179, 158)
+                TileColor = new Color(216, 179, 158)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofStoneLeft", new TileProperties{
-                tileColor = new Color(218, 188, 156)
+                TileColor = new Color(218, 188, 156)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofStoneCornerUpRight", new TileProperties{
-                tileColor = new Color(170, 105, 70)
+                TileColor = new Color(170, 105, 70)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofMiddleVertical", new TileProperties{
-                tileColor = new Color(174, 0, 27)
+                TileColor = new Color(174, 0, 27)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofMiddleHorisontal", new TileProperties{
-                tileColor = new Color(136, 0, 21)
+                TileColor = new Color(136, 0, 21)
                 }),
                 new Tile("Graphics/Maps/WorldMap/Overlay/City/House/Roof/RoofMiddleCornerUpRight", new TileProperties{
-                tileColor = new Color(91, 0, 14)
+                TileColor = new Color(91, 0, 14)
                 })
             };
             return new TileCollection(Content, tiles);

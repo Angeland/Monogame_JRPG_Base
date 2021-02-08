@@ -6,8 +6,10 @@ namespace DreamsEnd.Textures
 {
     public interface ITilesCollection: IDisposable
     {
-        Texture2D GetTile(Color tileColor);
-        Texture2D GetTile(int index = 0);
+        Texture2D GetTexture(Color tileColor);
+        Texture2D GetTexture(int index = 0);
+        Texture2D GetSubTexture(Color tileColor);
+        bool HasSubTexture(Color tileColor);
         int Length { get; }
         Vector2 Size { get; }
 

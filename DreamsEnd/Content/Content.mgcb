@@ -284,6 +284,18 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/Maps/WorldMap/Overlay/Land/Grass2.bmp
 
+#begin Graphics/Maps/WorldMap/Overlay/Land/Grassland.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/Maps/WorldMap/Overlay/Land/Grassland.png
+
 #begin Graphics/Maps/WorldMap/Overlay/Land/Sand.bmp
 /importer:TextureImporter
 /processor:TextureProcessor
